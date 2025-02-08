@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./book-app-frontend
+      dockerfile: Dockerfile
+    container_name: book-app-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - book-app-network
+
+  api:
+    container_name: book-app-backend
+    build:
+      context: ./book-app-backend
+    ports:
+      - "5001:5001"
+    restart: always
+    volumes:
+      - ./book-app-backend:/app
+    env_file:
+      - ./book-app-backend/.env
+    networks:
+      - book-app-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:latest
+    container_name: book-app-mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+    env_file:
+      - ./book-app-backend/.env
+    networks:
+      - book-app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    container_name: book-app-nginx
+    build: ./nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - api
+      - mysql
+    networks:
+      - book-app-network
+    volumes:
+      - ./book-app-frontend/build:/usr/share/nginx/html
+
+volumes:
+  mysql-data:
+
+networks:
+  book-app-network:
+    driver: bridge    #? OS CONTAINERES FICAM NA MESMA REDE PARA FACILITAR A COMUNICACAO
