@@ -42,7 +42,3 @@ Este projeto inclui um diferencial:
 ## Passo 5) Gravação do Vídeo Explicativo e Postagem
 
 - [x] **REQ16** - Grave e poste o vídeo explicativo conforme as orientações.
-
----
-
-Esse formato resume os passos principais e mantém o item de gravação e postagem do vídeo de forma mais direta. Se precisar de mais ajustes, estou à disposição!
