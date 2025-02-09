@@ -1,0 +1,6 @@
+[submodule "book-app-backend"]
+	path = book-app-backend
+	url = https://github.com/milenahamerski/book-app-backend.git
+[submodule "book-app-frontend"]
+	path = book-app-frontend
+	url = https://github.com/milenahamerski/book-app-frontend.git
